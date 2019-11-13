@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>URL hierarchy</title>
+<title>JSON Tree using D3 ver 3</title>
+<link rel="stylesheet" type="text/css" href="/css/normalize.css">
+<link rel="stylesheet" type="text/css" href="/css/JSONTree.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="/js/d3.v3.js" type="text/javascript" charset="utf-8"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-126210376-2"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    var responseJson = /*[[${json}]]*/'default';
+    console.log(message);
+
+    /*]]>*/
+</script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+	dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-126210376-2');
+</script>
+<script type="text/javascript">
+    window.onLoad = (function() {
+	if (!Array.prototype.forEach) {
+	    Array.prototype.forEach = function(fun /*, thisp*/) {
+		var len = this.length >>> 0;
+		if (typeof fun != "function") {
+		    throw new TypeError();
+		}
+
+		var thisp = arguments[1];
+		for (var i = 0; i < len; i++) {
+		    if (i in this) {
+			fun.call(thisp, this[i], i, this);
+		    }
+		}
+	    };
+	}
+    })();
+</script>
+</head>
+<body>
+	<div class="container" style="padding: 20px">
+		<div class="row">
+			<div class="input-group mb-3">
+				<input type="text" class="form-control" placeholder="Recipient's username" aria-label="Json"
+					aria-describedby="button-addon2" id="jsoncontent">
+				<div class="input-group-append">
+					<button class="btn btn-outline-secondary" type="button" id="visualize">Visualize</button>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<label> Vertical: <input type="radio" name="vertical_horizontal" value="vertical" />
+			</label> <label> Horizontal: <input type="radio" name="vertical_horizontal" value="horizontal" checked />
+			</label>
+		</div>
+	</div>
+	<div id="jsontree" class="center" style="height: 100%"></div>
+	<script type="text/javascript" src="/js/JSONTree.js"></script>
+</body>
+</html>
