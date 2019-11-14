@@ -38,6 +38,7 @@ public class CrawlerService {
 
   private String initURL = "";
   private String initURLHost = "";
+  private String protocol = "";
 
   public HashSet<String> foundEmails = new HashSet<>();
   public HashSet<String> foundUrls = new HashSet<>();
@@ -53,6 +54,7 @@ public class CrawlerService {
 
     this.initURL = initURL;
     this.initURLHost = url.getHost().toString();
+    this.protocol = url.getProtocol();
     this.optionsChecker = new CrawlOptionsChecker(options, initURLHost);
 
     if (optionsChecker.startFromIndex()) {
@@ -60,7 +62,7 @@ public class CrawlerService {
     }
 
     if (optionsChecker.useSitemap()) {
-      urlQueue.addAll(seoService.getURL(new URL(initURL)));
+      urlQueue.addAll(seoService.getUrlsOnSitemap(this.protocol+"://"+this.initURLHost+"/sitemap.xml"));
     }
 
     visualizationMap.put(initURL, null);
@@ -77,10 +79,6 @@ public class CrawlerService {
     });
 
     return visualizationMap;
-  }
-
-  public ExecutorService getExecutorService() {
-    return executorService;
   }
 
   private void crawlLoop(String url, Map<String, Object> urlMap, int depth) {
@@ -101,7 +99,6 @@ public class CrawlerService {
     urlMatches.forEach(foundUrl -> {
 
       String validUrl = helper.getValidUrl(foundUrl, url);
-
       if (!validUrl.isEmpty() && !foundUrls.contains(validUrl)) {
         if (optionsChecker.changeHost(validUrl)) {
           if (optionsChecker.onylHtml(helper.getURLContentType(validUrl))) {

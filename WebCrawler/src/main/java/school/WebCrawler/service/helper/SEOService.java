@@ -1,13 +1,10 @@
 package school.WebCrawler.service.helper;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,25 +32,16 @@ import crawlercommons.sitemaps.UnknownFormatException;
 public class SEOService {
   private Map<URL, Set<RobotRule>> robotsCache = new HashMap<>();
 
-  public static void main(String[] args) throws MalformedURLException {
-    SEOService s = new SEOService();
-    s.getURL(new URL("https://google.com/sitemap.xml")).forEach(url -> {
-      System.out.println(url.toString());
-    });
-  }
-
+  
   public boolean isAllowed(String url) {
     try {
       URL urlObj = new URL(url);
       Set<RobotRule> cachedRules = robotsCache.get(urlObj);
-
       if (cachedRules == null) {
 
         String USER_AGENT = "*";
         HttpClient httpclient = HttpClientBuilder.create().build();
-
-        String hostId = urlObj.getProtocol() + "://" + urlObj.getHost()
-            + (urlObj.getPort() > -1 ? ":" + urlObj.getPort() : "");
+        String hostId = urlObj.getProtocol() + "://" + urlObj.getHost() + (urlObj.getPort() > -1 ? ":" + urlObj.getPort() : "");
 
         Map<String, BaseRobotRules> robotsTxtRules = new HashMap<String, BaseRobotRules>();
         SimpleRobotRules rules = (SimpleRobotRules) robotsTxtRules.get(hostId);
@@ -72,20 +60,14 @@ public class SEOService {
             BufferedHttpEntity entity = new BufferedHttpEntity(response.getEntity());
             SimpleRobotRulesParser robotParser = new SimpleRobotRulesParser();
 
-            rules = robotParser.parseContent(hostId, IOUtils.toByteArray(entity.getContent()),
-                "text/plain", USER_AGENT);
+            rules = robotParser.parseContent(hostId, IOUtils.toByteArray(entity.getContent()), "text/plain", USER_AGENT);
           }
         }
-
-
-
-        robotsCache.put(urlObj, rules.getRobotRules().stream().filter(rule -> !rule.isAllow())
-            .collect(Collectors.toSet()));
+        robotsCache.put(urlObj, rules.getRobotRules().stream().filter(rule -> !rule.isAllow()).collect(Collectors.toSet()));
 
         RobotRule matchingRule = rules.getRobotRules().stream()
-            .filter(rule -> (urlObj.getProtocol() + "://" + urlObj.getHost() + rule.getPrefix())
-                .equals(urlObj.toString()))
-            .findFirst().orElse(null);
+            .filter(rule -> (urlObj.getProtocol() + "://" + urlObj.getHost() + rule.getPrefix()).equals(urlObj.toString())).findFirst()
+            .orElse(null);
 
         if (matchingRule == null) {
           return true;
@@ -95,9 +77,8 @@ public class SEOService {
       } else {
 
         RobotRule matchingRule = cachedRules.stream()
-            .filter(rule -> (urlObj.getProtocol() + "://" + urlObj.getHost() + rule.getPrefix())
-                .equals(urlObj.toString()))
-            .findFirst().orElse(null);
+            .filter(rule -> (urlObj.getProtocol() + "://" + urlObj.getHost() + rule.getPrefix()).equals(urlObj.toString())).findFirst()
+            .orElse(null);
 
         if (matchingRule == null || matchingRule.isAllow()) {
           return true;
@@ -112,11 +93,13 @@ public class SEOService {
     }
   }
 
-  public HashSet<String> getURL(URL url) {
-    SiteMapParser parser = new SiteMapParser();
-    AbstractSiteMap sm;
-    HashSet<String> urlList = new HashSet<>();
+  public HashSet<String> getUrlsOnSitemap(String urlString) {
     try {
+      URL url = new URL(urlString);
+      SiteMapParser parser = new SiteMapParser();
+      AbstractSiteMap sm;
+      HashSet<String> urlList = new HashSet<>();
+
       try {
         sm = parser.parseSiteMap("text/xml", IOUtils.toByteArray(url), url);
         sm.setType(SitemapType.XML);
@@ -128,7 +111,7 @@ public class SEOService {
       if (sm.isIndex()) {
         Collection<AbstractSiteMap> links = ((SiteMapIndex) sm).getSitemaps();
         for (AbstractSiteMap asm : links) {
-          urlList.addAll(getURL(asm.getUrl()));
+          urlList.addAll(getUrlsOnSitemap(asm.getUrl().toString()));
         }
       } else if (!sm.isIndex()) {
         Collection<SiteMapURL> links = ((SiteMap) sm).getSiteMapUrls();
@@ -136,35 +119,9 @@ public class SEOService {
           urlList.add(smu.getUrl().toString());
         }
       }
-    } catch (UnknownFormatException | IOException e) {
-      return null;
+      return urlList;
+    } catch (IOException | UnknownFormatException e) {
+      return new HashSet<>();
     }
-    return urlList;
-  }
-
-  public List<AbstractSiteMap> getSitemapURLs(String sitemapUrl) {
-    List<AbstractSiteMap> sitemaps = new ArrayList<>();
-    SiteMapParser siteMapParser = new SiteMapParser();
-    try {
-
-      HttpClient httpclient = HttpClientBuilder.create().build();
-      HttpGet httpget = new HttpGet(sitemapUrl);
-      HttpResponse response = httpclient.execute(httpget, new BasicHttpContext());
-      BufferedHttpEntity entity = new BufferedHttpEntity(response.getEntity());
-
-      String contentType = entity.getContentType().toString();
-
-      AbstractSiteMap sitemap = siteMapParser.parseSiteMap(contentType,
-          IOUtils.toByteArray(entity.getContent()), new URL(sitemapUrl));
-
-      if (sitemap.isIndex()) {
-        sitemaps.addAll(((SiteMapIndex) sitemap).getSitemaps());
-      } else {
-        sitemaps.add(sitemap);
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return sitemaps;
   }
 }
