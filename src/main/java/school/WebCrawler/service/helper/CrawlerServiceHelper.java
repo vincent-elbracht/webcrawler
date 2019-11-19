@@ -24,8 +24,8 @@ public class CrawlerServiceHelper {
   }
 
   public String getValidUrl(String foundUrl, String srcUrl) {
-    try {
-
+    try {        
+      
       String[] schemes = {"http", "https"}; // DEFAULT schemes = "http", "https", "ftp"
       UrlValidator urlValidator = new UrlValidator(schemes);
 

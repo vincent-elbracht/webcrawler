@@ -14,5 +14,7 @@ public class CrawlerServiceHelperTest {
     String expResult = "http://csbme.de/c";
 
     assertEquals(result, expResult);
+
+
   }
 }
