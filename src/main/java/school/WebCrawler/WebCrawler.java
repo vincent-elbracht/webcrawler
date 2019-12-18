@@ -10,8 +10,8 @@ public class WebCrawler {
 
   public static void main(String[] args) throws JsonProcessingException, InterruptedException {
 
-//    System.setProperty("http.proxyHost", "10.1.1.3");
-//    System.setProperty("http.proxyPort", "8080");
+   // System.setProperty("http.proxyHost", "10.1.1.3");
+   // System.setProperty("http.proxyPort", "8080");
 
     CrawlerService service = new CrawlerService();
     
@@ -21,11 +21,12 @@ public class WebCrawler {
               .startFromIndex(false)
               .changeHost(false)
               .onylHtml(true)
-              .depth(3)
               .useRobotstxt(true)
               .useSitemap(true)
               .openResultInBrowser(true)
-              .timelimit(100, TimeUnit.SECONDS).get());
+              .timelimit(100, TimeUnit.SECONDS)
+              .visualize("C:\\Users\\viel198\\Desktop\\Ausbildung\\Schule\\Webcrawler\\visualization")
+              .get());
       
       service.startCrawl();
       
@@ -33,8 +34,8 @@ public class WebCrawler {
       e.printStackTrace();
     }
     
-//    System.clearProperty("http.proxyHost");
-//    System.clearProperty("http.proxyPort");
+   // System.clearProperty("http.proxyHost");
+   // System.clearProperty("http.proxyPort");
   }
 
 }

@@ -1,7 +1,8 @@
 
 
 (function() {
-	var dummyContent = responseJson;
+	var dummyContent = JSON.stringify(responseJson);
+	console.log(dummyContent);
 	//var parsedContent = JSON.stringify(JSON.parse(dummyContent), null, "\t")
 	document.getElementById("jsoncontent").value = dummyContent;
 	callJSONTree();

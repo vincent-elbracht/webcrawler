@@ -30,18 +30,20 @@ public class CrawlOptionsChecker {
   }
 
   public boolean useRobotstxt(String foundUrl) {
-    return !(boolean) optionsMap.get(CrawlOptions.USEROBOTSTXT)
-        || robotsService.isAllowed(foundUrl);
+    return !(boolean) optionsMap.get(CrawlOptions.USEROBOTSTXT) || robotsService.isAllowed(foundUrl);
   }
 
   public boolean useSitemap() {
     return (boolean) optionsMap.get(CrawlOptions.USESITEMAP);
   }
 
+  public String visualizePath() {
+    return (String) optionsMap.get(CrawlOptions.VISUALIZE);
+  }
+
   public boolean depth(int depthCounter) {
     try {
-      if ((int) optionsMap.get(CrawlOptions.DEPTH) == 0
-          || depthCounter < (int) optionsMap.get(CrawlOptions.DEPTH)) {
+      if ((int) optionsMap.get(CrawlOptions.DEPTH) == 0 || depthCounter < (int) optionsMap.get(CrawlOptions.DEPTH)) {
         return true;
       } else {
         return false;

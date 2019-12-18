@@ -4,19 +4,14 @@
 <meta charset="ISO-8859-1">
 <title>URL hierarchy</title>
 <title>JSON Tree using D3 ver 3</title>
-<link rel="stylesheet" type="text/css" href="/css/normalize.css">
-<link rel="stylesheet" type="text/css" href="/css/JSONTree.css">
+<link rel="stylesheet" type="text/css" href="../css/normalize.css">
+<link rel="stylesheet" type="text/css" href="../css/JSONTree.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<script src="/js/d3.v3.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/d3.v3.js" type="text/javascript" charset="utf-8"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-126210376-2"></script>
-<script th:inline="javascript">
-    /*<![CDATA[*/
-
-    var responseJson = /*[[${json}]]*/'default';
-    console.log(message);
-
-    /*]]>*/
+<script id="responseJson" type="text/javascript" src="JSON_FILE"></script> 
+  
 </script>
 <script>
     window.dataLayer = window.dataLayer || [];
@@ -48,7 +43,7 @@
 </script>
 </head>
 <body>
-	<div class="container" style="padding: 20px">
+	<div class="container" style="padding: 20px; display:none">
 		<div class="row">
 			<div class="input-group mb-3">
 				<input type="text" class="form-control" placeholder="Recipient's username" aria-label="Json"
@@ -64,7 +59,7 @@
 			</label>
 		</div>
 	</div>
-	<div id="jsontree" class="center" style="height: 100%"></div>
-	<script type="text/javascript" src="/js/JSONTree.js"></script>
+	<div id="jsontree" class="center" style="height: 100% !important"></div>
+	<script type="text/javascript" src="../js/JSONTree.js"></script>
 </body>
 </html>

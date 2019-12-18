@@ -16,7 +16,8 @@ public class CrawlOptions {
   public static final String OPENRESULTINBROWSER = "openResultInBrowser";
   public static final String DEPTH = "depth";
   public static final String MAXWAITINGTIME = "maxWaitingTime";
-  
+  public static final String VISUALIZE = "visualize";
+
   public static final String TIMELIMIT = "timelimit";
 
 
@@ -53,21 +54,30 @@ public class CrawlOptions {
     optionsMap.put(CrawlOptions.OPENRESULTINBROWSER, openResultInBrowser);
     return this;
   }
-  
+
   public CrawlOptions timelimit(int timelimit_number, TimeUnit timelimit_unit) {
     Long millis = TimeUnit.MILLISECONDS.convert(timelimit_number, timelimit_unit);
     optionsMap.put(CrawlOptions.TIMELIMIT, millis);
     return this;
   }
-  
+
   public CrawlOptions depth(int depth) {
     optionsMap.put(CrawlOptions.DEPTH, depth);
     return this;
   }
-  
+
   public CrawlOptions maxWaitingTime(int maxWaitingTime_number, TimeUnit maxWaitingTime_unit) {
     Long millis = TimeUnit.MILLISECONDS.convert(maxWaitingTime_number, maxWaitingTime_unit);
     optionsMap.put(CrawlOptions.MAXWAITINGTIME, millis);
+    return this;
+  }
+
+  public CrawlOptions visualize(String outputPath) {
+    if (outputPath != null) {
+      optionsMap.put(CrawlOptions.VISUALIZE, outputPath);
+    } else {
+      optionsMap = null;
+    }
     return this;
   }
 
