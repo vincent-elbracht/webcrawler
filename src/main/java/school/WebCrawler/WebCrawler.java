@@ -16,16 +16,16 @@ public class WebCrawler {
     CrawlerService service = new CrawlerService();
     
     try {
-      service.init("http://www.csbme.de",
+      service.init("https://youtube.com",
           CrawlOptions.options()
               .startFromIndex(false)
-              .changeHost(false)
+              .changeHost(true)
               .onylHtml(true)
               .useRobotstxt(true)
               .useSitemap(true)
               .openResultInBrowser(true)
-              .timelimit(100, TimeUnit.SECONDS)
-              .visualize("C:\\Users\\viel198\\Desktop\\Ausbildung\\Schule\\Webcrawler\\visualization")
+              .timelimit(1, TimeUnit.MINUTES)
+              .visualize("C:\\Users\\Vincent\\Desktop\\visualization")
               .get());
       
       service.startCrawl();

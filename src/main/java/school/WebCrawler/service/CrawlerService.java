@@ -23,10 +23,10 @@ import school.WebCrawler.visualize.Visualization;
 public class CrawlerService {
   private CrawlerServiceHelper helper = new CrawlerServiceHelper();
   private SEOService seoService = new SEOService();
-  private CrawlerLogger logger = new CrawlerLogger();
   private PatternMatcher matcher = new PatternMatcher();
   private CrawlOptionsChecker optionsChecker;
   private Visualization visualization;
+  private CrawlerLogger logger;
 
   private ObjectWriter mapper = new ObjectMapper().writer().withDefaultPrettyPrinter();
   private Map<String, Object> visualizationMap = new HashMap<>();
@@ -50,7 +50,7 @@ public class CrawlerService {
     if (!initURL.endsWith("/")) {
       initURL += "/";
     }
-
+    this.logger = new CrawlerLogger(options);
     this.initURL = initURL;
     this.initURLHost = url.getHost().toString();
     this.protocol = url.getProtocol();

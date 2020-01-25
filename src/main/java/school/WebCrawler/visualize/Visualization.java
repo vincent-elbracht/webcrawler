@@ -23,12 +23,14 @@ public class Visualization {
 
     File jsFolder = new File(getClass().getClassLoader().getResource("static/js").getFile());
     File localJsFolder = new File(path + "\\js");
+    
+    File localLogFolder = new File(path + "\\log");
+
 
     try {
 
       if (!localVisualizeFile.exists()) {
         FileUtils.copyFile(visualizeFile, localVisualizeFile);
-
       }
       if (!localCssFolder.exists()) {
         FileUtils.copyDirectory(cssFolder, localCssFolder);
@@ -40,6 +42,10 @@ public class Visualization {
       if (!savedDir.exists()) {
         savedDir.mkdir();
       }
+      if (!localLogFolder.exists()) {
+         localLogFolder.mkdir();
+        }
+      
 
     } catch (IOException e) {
       e.printStackTrace();
